@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import { ExtReact, Container } from '@sencha/ext-react';
-import { Grid, Column, Button, WidgetCell } from '@sencha/ext-modern';
+import { Grid, Column, Button, WidgetCell, SparkLineLine, TitleBar, Menu, MenuItem } from '@sencha/ext-modern';
 import stocks from '../data/stocks';
 
+Ext.require([
+    'Ext.Toast',
+    'Ext.grid.plugin.*',
+    'Ext.exporter.*'
+]);
 
 export default class StocksGrid extends Component {
 
@@ -31,21 +36,38 @@ export default class StocksGrid extends Component {
         Ext.toast(`${record.get('name')} ${field} updated to ${record.get(field)}`)
     }
 
+    export = (type) => { this.grid.cmp.saveDocumentAs(
+        { type, title: 'Stocks' });
+    }
+
 
     render() {
         return (
             <Grid
                 ref={grid => this.grid = grid}
                 store={this.store}
+                plugins={{
+                    gridexporter: true,
+                  }}
+                    
             >
-                <Column >
+            <TitleBar docked="top" title="Stocks">
+                    <Button align="right" text="Export">
+                        <Menu indented={false}>
+                            <MenuItem text="Excel" handler={this.export.bind(this, 'excel07')}/>
+                            <MenuItem text="CSV" handler={this.export.bind(this, 'csv')}/>
+                        </Menu>
+                    </Button>
+                </TitleBar>
+
+                <Column ignoreExport>
                     <WidgetCell>
                         <Button ui="round action" className="x-item-no-select" handler={this.buyHandler} text="Buy" />
                     </WidgetCell>
                 </Column>
                 <Column dataIndex="name" text="Name" width={300} cell={{ style: { fontWeight: 'bold' } }} />
                 <Column dataIndex="symbol" text="Symbol" />
-                <Column dataIndex="ticks" text="Trend" sortable={false} 
+                <Column dataIndex="ticks" text="Trend" sortable={false} ignoreExport
                     cell = { { 
                             xtype: 'widgetcell',
                             forceWidth: true,
