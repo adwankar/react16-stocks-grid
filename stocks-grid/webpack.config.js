@@ -1,15 +1,16 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ExtReactWebpackPlugin = require('@extjs/reactor-webpack-plugin')
+const ExtReactWebpackPlugin = require('@sencha/ext-react-webpack-plugin')
 const portfinder = require('portfinder')
 const sourcePath = path.join(__dirname, './src');
 
 module.exports = function (env) {
-  portfinder.basePort = (env && env.port) || 8080; // the default port to use
+  portfinder.basePort = (env && env.port) || 1962; // the default port to use
   return portfinder.getPortPromise().then(port => {
     const nodeEnv = env && env.prod ? 'production' : 'development';
     const isProd = nodeEnv === 'production'
+    const local = env && env.local
     const plugins = [
       new HtmlWebpackPlugin({
         template: 'index.html',
@@ -19,7 +20,8 @@ module.exports = function (env) {
         port: port,
         //theme: 'custom-ext-react-theme',
         //overrides: ['ext-react/overrides'],
-        production: isProd
+        production: isProd,
+        treeShaking: false
       })
     ]
     if (!isProd) {
@@ -29,14 +31,13 @@ module.exports = function (env) {
     }
     return {
       mode: 'development',
+      cache: true, //??
       devtool: isProd ? 'source-map' : 'cheap-module-source-map',
       context: sourcePath,
       entry: {
-        reactor16: ['@extjs/reactor16'],
-        'app': [
-          'babel-polyfill',
-          './index.js'
-        ]
+        'vendor': ['react', 'prop-types', 'react-dom', 'react-router-dom', 'history'],
+        'ext-react': ['@sencha/ext-react'],
+        'app': ['babel-polyfill','./index.js']
       },
       output: {
         path: path.resolve(__dirname, 'build'),
