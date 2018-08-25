@@ -50,10 +50,20 @@ export default class StocksGrid extends Component {
             <Grid
                 ref={grid => this.grid = grid}
                 store={this.store}
-                plugins={{
-                    gridexporter: true,
-                    gridcellediting: true
-                  }}
+                platformConfig={{
+                    desktop: {
+                        plugins: {
+                            gridexporter: true,
+                            gridcellediting: true
+                        }
+                    },
+                    '!desktop': {
+                        plugins: {
+                            gridexporter: true,
+                            grideditable: true
+                        }
+                    }
+                }} 
                     
             >
             <TitleBar docked="top" title="Stocks">
