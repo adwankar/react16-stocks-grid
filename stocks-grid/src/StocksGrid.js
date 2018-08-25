@@ -48,6 +48,7 @@ export default class StocksGrid extends Component {
                 store={this.store}
                 plugins={{
                     gridexporter: true,
+                    gridcellediting: true
                   }}
                     
             >
@@ -65,7 +66,7 @@ export default class StocksGrid extends Component {
                         <Button ui="round action" className="x-item-no-select" handler={this.buyHandler} text="Buy" />
                     </WidgetCell>
                 </Column>
-                <Column dataIndex="name" text="Name" width={300} cell={{ style: { fontWeight: 'bold' } }} />
+                <Column dataIndex="name" text="Name" width={300} cell={{ style: { fontWeight: 'bold' } }} editable />
                 <Column dataIndex="symbol" text="Symbol" />
                 <Column dataIndex="ticks" text="Trend" sortable={false} ignoreExport
                     cell = { { 
@@ -77,8 +78,8 @@ export default class StocksGrid extends Component {
                         }
                     } }
                 />
-                <Column dataIndex="sector" text="Sector" width={200} />
-                <Column dataIndex="industry" text="Industry" width={350} />
+                <Column dataIndex="sector" text="Sector" width={200} editable />
+                <Column dataIndex="industry" text="Industry" width={350} editable />
                 
                 
             </Grid>
