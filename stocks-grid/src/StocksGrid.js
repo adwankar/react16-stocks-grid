@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ExtReact, Container } from '@sencha/ext-react';
-import { Grid, Column, Button, WidgetCell, SparkLineLine, TitleBar, Menu, MenuItem } from '@sencha/ext-modern';
+import { Grid, Column, Button, WidgetCell, SparkLineLine, TitleBar, Menu, MenuItem, SelectField } from '@sencha/ext-modern';
 import stocks from '../data/stocks';
 
 Ext.require([
@@ -8,6 +8,10 @@ Ext.require([
     'Ext.grid.plugin.*',
     'Ext.exporter.*'
 ]);
+
+let sectors = Array.from(new Set(stocks.map(stock => stock.sector))).map(sector => {
+    return { text: sector, value: sector }
+})
 
 export default class StocksGrid extends Component {
 
@@ -78,7 +82,9 @@ export default class StocksGrid extends Component {
                         }
                     } }
                 />
-                <Column dataIndex="sector" text="Sector" width={200} editable />
+                <Column dataIndex="sector" text="Sector" width={200} editable>
+                    <SelectField options={sectors}/>
+                </Column>
                 <Column dataIndex="industry" text="Industry" width={350} editable />
                 
                 
