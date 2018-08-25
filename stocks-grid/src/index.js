@@ -1,12 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { AppContainer } from 'react-hot-loader'
-import { launch } from '@extjs/reactor';
+import { launch } from '@sencha/ext-react';
+import {ExtReact} from '@sencha/ext-react';
 import App from './App'
 
 let viewport;
 
-import {ExtReact} from '@extjs/ext-react';
+
 const render = (Component, target) => {
   ReactDOM.render(
     <ExtReact>
